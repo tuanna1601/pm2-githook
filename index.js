@@ -158,8 +158,8 @@ Worker.prototype.processRequest = function (req) {
   async.series(Object.keys(phases).map(function(k){ return phases[k]; }),
     function (err, results) {
       if (err) {
-        console.log('[%s] An error has occuring while processing app %s', new Date().toISOString(), targetName);
-        console.error(err);
+        console.log('[%s] An error has occured while processing app %s', new Date().toISOString(), targetName);
+        console.error(JSON.stringify(err));
       }
     });
 };
