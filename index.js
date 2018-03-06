@@ -227,10 +227,10 @@ Worker.prototype.checkRequest = function checkRequest(targetApp, req) {
         return util.format('[%s] Received request from %s for app %s but ip configured was %s', new Date().toISOString(), req.ip, targetName, ip);
       }
       if (!tmp.push && !tmp.commit_status) {
-        return util.format('[%s] Received valid hook but without 'push' data for app %s', new Date().toISOString(), targetName);
+        return util.format("[%s] Received valid hook but without 'push' data for app %s", new Date().toISOString(), targetName);
       }
       if (tmp.commit_status && tmp.commit_status.state !== 'SUCCESSFUL') {
-        return util.format('[%s] Received valid hook but with "%s" status for app %s', new Date().toISOString(), tmp.commit_status.state, targetName);
+        return util.format("[%s] Received valid hook but with '%s' status for app %s", new Date().toISOString(), tmp.commit_status.state, targetName);
       }
       if (targetApp.branch && tmp.push.changes[0] && tmp.push.changes[0].new.name.indexOf(targetApp.branch) < 0) {
         return util.format('[%s] Received valid hook but with a branch %s than configured for app %s', new Date().toISOString(), tmp.push.changes[0].new.name, targetName);
