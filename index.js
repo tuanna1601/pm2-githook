@@ -229,6 +229,9 @@ Worker.prototype.checkRequest = function checkRequest(targetApp, req) {
       if (!tmp.push && !tmp.commit_status) {
         return util.format("[%s] Received valid hook but without 'push' data for app %s", new Date().toISOString(), targetName);
       }
+      if (tmp.commit_status && tmp.commit_status.refname.indexOf(targetApp.branch) < 0) {
+        return util.format('[%s] Received valid hook but with a branch %s than configured for app %s', new Date().toISOString(), tmp.commit_status.refname, targetName)      
+      }
       if (tmp.commit_status && tmp.commit_status.state !== 'SUCCESSFUL') {
         return util.format("[%s] Received valid hook but with '%s' status for app %s", new Date().toISOString(), tmp.commit_status.state, targetName);
       }
