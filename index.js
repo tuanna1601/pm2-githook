@@ -232,7 +232,7 @@ Worker.prototype.checkRequest = function checkRequest(targetApp, req) {
       if (tmp.commit_status && tmp.commit_status.state !== 'SUCCESSFUL') {
         return util.format("[%s] Received valid hook but with '%s' status for app %s", new Date().toISOString(), tmp.commit_status.state, targetName);
       }
-      if (targetApp.branch && tmp.push.changes[0] && tmp.push.changes[0].new.name.indexOf(targetApp.branch) < 0) {
+      if (targetApp.branch && tmp.push && tmp.push.changes[0] && tmp.push.changes[0].new.name.indexOf(targetApp.branch) < 0) {
         return util.format('[%s] Received valid hook but with a branch %s than configured for app %s', new Date().toISOString(), tmp.push.changes[0].new.name, targetName);
       }
       break;
