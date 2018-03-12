@@ -118,6 +118,8 @@ Worker.prototype.processRequest = function (req) {
   };
   var phases = {
     resolveCWD: function resolveCWD(cb) {
+      // debug cwd
+      console.log('Target App CWD', new Date().toISOString(), targetApp.cwd);
       // if cwd is provided, we expect that it isnt a pm2 app
       if (targetApp.cwd) return cb();
 
@@ -127,6 +129,7 @@ Worker.prototype.processRequest = function (req) {
 
         // execute the actual command in the cwd of the application
         targetApp.cwd = apps[0].pm_cwd ? apps[0].pm_cwd : apps[0].pm2_env.pm_cwd;
+        console.log('PM2 APP CWD', new Date().toISOString(), apps[0].pm_cwd, apps[0].pm2_env.pm_cwd);
         return cb();
       });
     },
