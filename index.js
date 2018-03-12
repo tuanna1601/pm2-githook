@@ -119,7 +119,7 @@ Worker.prototype.processRequest = function (req) {
   var phases = {
     resolveCWD: function resolveCWD(cb) {
       // debug cwd
-      console.log('Target App CWD', new Date().toISOString(), targetApp.cwd);
+      console.log(`[${new Date().toISOString()}]`, 'Target App CWD', targetApp.cwd);
       // if cwd is provided, we expect that it isnt a pm2 app
       if (targetApp.cwd) return cb();
 
@@ -129,7 +129,7 @@ Worker.prototype.processRequest = function (req) {
 
         // execute the actual command in the cwd of the application
         targetApp.cwd = apps[0].pm_cwd ? apps[0].pm_cwd : apps[0].pm2_env.pm_cwd;
-        console.log('PM2 APP CWD', new Date().toISOString(), apps[0].pm_cwd, apps[0].pm2_env.pm_cwd);
+        console.log(`[${new Date().toISOString()}]`, 'PM2 APP CWD', apps[0].pm_cwd, apps[0].pm2_env.pm_cwd);
         return cb();
       });
     },
@@ -140,7 +140,8 @@ Worker.prototype.processRequest = function (req) {
     },
     preHook: function preHook(cb) {
       if (!targetApp.prehook) return cb();
-
+      
+      console.log(`[${new Date().toISOString()}]`, 'Prehook debug', JSON.stringify(targetApp));
       spawnAsExec(targetApp.prehook, execOptions,
           logCallback(cb, '[%s] Prehook command has been successfuly executed for app %s', new Date().toISOString(), targetName));
     },
