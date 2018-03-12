@@ -324,5 +324,6 @@ function reqToAppName(req) {
  */
 function spawnAsExec(command, options, cb) {
   var child = spawn('eval', [command], options);
+  console.log(`[${new Date().toISOString()}]`, 'spawnAsExec debug', JSON.stringify(options));
   child.on('close', cb);
 }
