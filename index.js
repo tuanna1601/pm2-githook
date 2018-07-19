@@ -73,9 +73,6 @@ Worker.prototype._handleHttp = function (req, res) {
   }
 
   // get source ip
-  console.log('headers', req.headers);
-  console.log('connection', req.connection.remoteAddress);
-  console.log('socket', req.socket);
   req.ip = req.headers['x-forwarded-for'] !== 'unknown' ? req.headers['x-forwarded-for'] : false || (req.connection ? req.connection.remoteAddress : false) ||
             (req.socket ? req.socket.remoteAddress : false) || ((req.connection && req.connection.socket)
               ? req.connection.socket.remoteAddress : false) || '';
@@ -226,13 +223,21 @@ Worker.prototype.checkRequest = function checkRequest(targetApp, req) {
     }
     case 'bitbucket': {
       var tmp = JSON.parse(req.body);
-      var ip = targetApp.secret || '104.192.143.0/24';
-      var configured = ipaddr.parseCIDR(ip);
-      console.log(req.ip);
+      var secret = targetApp.secret || '104.192.136.0/21,34.198.203.127/32,34.198.178.64/32,34.198.32.85/32';
+      var ips = secret.split(',');
+      var ipMatched = false;
       var source = ipaddr.parse(req.ip);
-
-      if (!source.match(configured)) {
-        return util.format('[%s] Received request from %s for app %s but ip configured was %s', new Date().toISOString(), req.ip, targetName, ip);
+	    
+	    
+      for (var i = 0; i < ips.length; i++) {
+	var configured = ipaddr.parseCIDR(ips[i]);
+	if (source.match(configured)) {
+	  ipMatched = true;
+	  break;
+	}
+      }
+      if (!ipMatched) {
+	return util.format('[%s] Received request from %s for app %s but ip configured was %s', new Date().toISOString(), req.ip, targetName, secret);      
       }
       if (!tmp.push && !tmp.commit_status) {
         return util.format("[%s] Received valid hook but without 'push' data for app %s", new Date().toISOString(), targetName);
