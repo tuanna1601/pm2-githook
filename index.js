@@ -73,6 +73,9 @@ Worker.prototype._handleHttp = function (req, res) {
   }
 
   // get source ip
+  console.log('headers', req.headers);
+  console.log('connection', req.connection);
+  console.log('socket', req.socket);
   req.ip = req.headers['x-forwarded-for'] || (req.connection ? req.connection.remoteAddress : false) ||
             (req.socket ? req.socket.remoteAddress : false) || ((req.connection && req.connection.socket)
               ? req.connection.socket.remoteAddress : false) || '';
