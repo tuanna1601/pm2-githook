@@ -225,6 +225,7 @@ Worker.prototype.checkRequest = function checkRequest(targetApp, req) {
       var tmp = JSON.parse(req.body);
       var ip = targetApp.secret || '104.192.143.0/24';
       var configured = ipaddr.parseCIDR(ip);
+      console.log(req.ip);
       var source = ipaddr.parse(req.ip);
 
       if (!source.match(configured)) {
