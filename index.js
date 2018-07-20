@@ -73,9 +73,10 @@ Worker.prototype._handleHttp = function (req, res) {
   }
 
   // get source ip
-  req.ip = req.headers['x-forwarded-for'] !== 'unknown' ? req.headers['x-forwarded-for'] : false || (req.connection ? req.connection.remoteAddress : false) ||
+  req.ip = (req.headers['x-forwarded-for'] !== 'unknown' ? req.headers['x-forwarded-for'] : false) || (req.connection ? req.connection.remoteAddress : false) ||
             (req.socket ? req.socket.remoteAddress : false) || ((req.connection && req.connection.socket)
               ? req.connection.socket.remoteAddress : false) || '';
+  console.log(req.headers['x-forwarded-for']);
   if (req.ip.indexOf('::ffff:') !== -1) {
     req.ip = req.ip.replace('::ffff:', '');
   }
