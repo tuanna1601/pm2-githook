@@ -224,7 +224,7 @@ Worker.prototype.checkRequest = function checkRequest(targetApp, req) {
     }
     case 'bitbucket': {
       var tmp = JSON.parse(req.body);
-      var secret = targetApp.secret || '104.192.136.0/21,34.198.203.127/32,34.198.178.64/32,34.198.32.85/32';
+      var secret = targetApp.secret || '104.192.136.0/21,34.198.203.127/32,34.198.178.64/32,34.198.32.85/32,18.205.93.0/25,18.234.32.128/25,13.52.5.0/25';
       var ips = secret.split(',');
       var ipMatched = false;
       var source = ipaddr.parse(req.ip);
